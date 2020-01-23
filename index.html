@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>春夏秋冬的你-新年快乐</title>
+		<link rel="stylesheet" type="text/css" href="animate.css"/>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="style2.css" />
+		<link rel="stylesheet" href="swiper.min.css" />
+		<script src="common.js"></script>
+		<script src="jquery-1.7.2.js"></script>
+		<script src="swiper.min.js"></script>
+		<script src="move.js"></script>
+		<style>
+			.swiper-container {
+		      width: 100%;
+		      height: 100%;
+		      background: #000;
+		    }
+		    .swiper-slide {
+		      text-align: center;
+		      font-size: 18px;
+		      background: #000;
+		      display: -webkit-box;
+		      display: -ms-flexbox;
+		      display: -webkit-flex;
+		      display: flex;
+		      -webkit-box-pack: center;
+		      -ms-flex-pack: center;
+		      -webkit-justify-content: center;
+		      justify-content: center;
+		      -webkit-box-align: center;
+		      -ms-flex-align: center;
+		      -webkit-align-items: center;
+		      align-items: center;
+		    }
+			.active{
+				display: none;
+			}
+			#dazi{
+				width: 12rem;
+				word-wrap : break-word ;
+			}
+			#dazi span{
+				opacity: 0;
+			}
+		</style>
+		<script>
+			setRem();
+			
+			$(function(){
+				var swiper = new Swiper('.swiper-container', {
+			      direction: 'vertical',
+			      on : {
+			      	slideChangeTransitionEnd: function(){
+			      		var now = this.realIndex;
+			      		if(now == 0){
+			      			clearTimeout(timer1);
+							clearInterval(timer1);
+							$('#rainzone h3').removeClass('animated bounceInDown');
+			      		}else if(now == 1){
+			      			fallRain();
+			      		}else if(now == 2){
+			      			fallLeaf();
+			      		}else if(now == 3){
+			      			fallSnow();
+			      		}else if(now == 4){
+			      			fallFlower();
+			      			$('.five-bg').append('<div id="fireworks"><img src="fireworks.png" alt=""></div><div id="firecracker"><img src="firecracker.png" alt="" width="8px"></div>');
+			      			
+			      			function tick()
+							{
+							
+								var oTargetDate=new Date();
+								oTargetDate.setMonth(oTargetDate.getMonth())
+								oTargetDate.setDate(23);
+								oTargetDate.setHours(20, 0, 0, 0);
+								var nTargetTime=oTargetDate.getTime();
+								
+								var oDate=new Date();
+								var nNow=oDate.getTime();
+								
+								var total=parseInt((nTargetTime-nNow)/1000);
+								
+								var day=parseInt(total/86400);
+								total%=86400;
+								
+								var h=parseInt(total/3600);
+								total%=3600;
+								
+								var m=parseInt(total/60);
+								total%=60;
+								
+								var s=total;
+								
+								$('#time').html('距离新年还剩'+day+'天'+h+'小时'+m+'分钟'+s+'秒');
+								
+								if(nTargetTime < nNow){
+									$('#time').html('向上滑，想对你说...');
+								}
+							}
+							
+							tick();
+							setInterval(tick, 1000);
+			      		}else{
+							$('#audio').attr('src','hello.mp3').get(0).play();
+							document.getElementById('dazi').innerHTML = '';
+							var str='遇见你是我今生最大的幸运，你我说hello于2019年12月20日，你我第一次见面于2020年1月11日，此时此刻，是我们相识的第36天第1秒...你怕冷，我想用我全部的温度给你取暖...走多了膝盖疼，我想用我全部的力气背你回家...你说过你要找个心里装满你的男孩，我想告诉你满眼于你，心不大，只能装满你一人...不会画画的我，第一次为你用代码画出一只你喜欢的猫猫，不算好看，希望你能喜欢。最后，我想说终于等到你...谢谢你何燕（小何，何小妹，何半仙）给我追求你的机会...何燕，有一个傻小子特别特别喜欢你...';
+							var aSpan=[];	
+							for (var i=0; i<str.length; i++)	{		
+								var oSpan=document.createElement('span');		
+								// oSpan.innerHTML=str[i];		
+								oSpan.innerHTML=str.charAt(i);		
+								document.getElementById('dazi').appendChild(oSpan);		
+								aSpan.push(oSpan);	
+							}		
+							var n=0;	
+							var timer=setInterval(function (){		
+								move(aSpan[n], {opacity:1});				
+								n++;		
+								if (n == aSpan.length){			
+									clearInterval(timer);		
+								}	
+							}, 100);
+						}
+			      	}
+			      }
+			    });
+			    
+			    
+			    var timer1 = null;
+			    var timer2 = null;
+			    var timer3 = null;
+			    //下雨
+				function fallRain(){
+					clearTimeout(timer2);
+					clearInterval(timer2);
+					function rain(left){
+						var div = document.createElement("div");
+						div.style.left = left+"px";
+						document.getElementById("rainzone").appendChild(div);
+						setTimeout(function(){
+							document.getElementById("rainzone").removeChild(div);
+						},3000);
+					}
+					timer1 = setInterval(function(){
+						
+						var left = Math.random()*window.innerWidth;
+						rain(left);
+					},150);
+					$('#rainzone h3').addClass('animated bounceInDown');
+					$('#leafzone h3').removeClass('animated flipInX');
+				}
+				
+				//落叶
+				function fallLeaf(){
+					clearTimeout(timer1);
+					clearInterval(timer1);
+					clearTimeout(timer3);
+					clearInterval(timer3);
+					function snow(left,src){
+						var img = document.createElement("img");
+						img.className = "roll";
+						img.src = src;
+						
+						img.style.left = left+"px";
+						document.getElementById("leafzone").appendChild(img);
+						
+						setTimeout(function(){
+							document.getElementById("leafzone").removeChild(img);
+						},5000);
+					}
+					timer2 = setInterval(function(){
+						var left = Math.random()*window.innerWidth;
+						var src = "leaf"+Math.floor(Math.random()*5+1)+".png";
+						snow(left,src);
+					},700);
+					$('#rainzone h3').removeClass('animated bounceInDown');
+					$('#snowzone h3').removeClass('animated rotateInDownLeft');
+					$('#leafzone h3').addClass('animated flipInX');
+				}
+				
+				//下雪
+				function fallSnow(){
+					clearTimeout(timer2);
+					clearInterval(timer2);
+					function snow(left,src){
+						var img = document.createElement("img");
+						img.className = "roll";
+						img.src = src;
+						
+						img.style.left = left+"px";
+						document.getElementById("snowzone").appendChild(img);
+						
+						setTimeout(function(){
+							document.getElementById("snowzone").removeChild(img);
+						},5000);
+					}
+					timer3 = setInterval(function(){
+						var left = Math.random()*window.innerWidth;
+						var src = "snow"+Math.floor(Math.random()*5+1)+".png";
+						snow(left,src);
+					},700);
+					
+					$('#leafzone h3').removeClass('animated flipInX');
+					$('#snowzone h3').addClass('animated rotateInDownLeft');
+					
+				}
+				
+				//烟花
+				function fallFlower(){
+					clearTimeout(timer3);
+					clearInterval(timer3);
+					function setColor(){
+						var colorArr = ["#ff0103","#ff7e06","#ffe91f","#03bc09","#0102cc","#fd00f2","#89a2f6","#fd0040","#01cf13","#ff00fc","#07fcff"];
+						return colorArr[Math.floor((Math.random()*colorArr.length))];
+					}
+					
+					var aSpan = $('.flower span');
+					for(var i=0; i<aSpan.length; i++){
+						var bg = setColor();
+						console.log(bg);
+						aSpan.eq(i).css("background",bg);
+					}
+					
+					$('#snowzone h3').removeClass('animated rotateInDownLeft');
+				}
+			})
+			document.addEventListener("DOMContentLoaded",function(){
+				document.querySelector('#audio').play();
+				
+				
+			})
+		</script>
+	</head>
+	<body>
+		<div class="swiper-container">
+		    <div class="swiper-wrapper">
+		      <div class="swiper-slide">
+		      	<div class="one-bg">
+					<h1 id="one-title">你从春天走来</h1>
+					<div class="icon-up"></div>
+				</div>
+		      </div>
+		      
+		      <div class="swiper-slide">
+		      	<div class="two-bg">
+		      		<div id="rainzone">
+						<h3>想为你挡雨</h3>
+					</div>
+					<div class="icon-up"></div>
+				</div>
+		      </div>
+		      
+		      <div class="swiper-slide">
+		      	<div class="three-bg">
+		      		<div id="leafzone">
+		      			<h3>想为你遮风</h3>
+		      		</div>
+		      		<div class="icon-up"></div>
+				</div>
+		      </div>
+		      
+		      <div class="swiper-slide">
+		      	<div class="four-bg">
+		      		<div id="snowzone">
+		      			<h3>想为你抵御寒冬</h3>
+		      		</div>
+		      		<div class="icon-up"></div>
+				</div>
+		      </div>
+		      
+		      <div class="swiper-slide">
+		      	<div class="five-bg">
+		      		<div id="flowerzone">
+						<div class="flower" style="left: 35%; top: 20%;">
+							<span class="num1"></span>
+							<span class="num2"></span>
+							<span class="num3"></span>
+							<span class="num4"></span>
+							<i style="animation-delay: .5s;">新</i>
+						</div>
+						<div class="flower" style="transform: rotate(45deg); left: 35%; top: 20%;">
+							<span class="num1"></span>
+							<span class="num2"></span>
+							<span class="num3"></span>
+							<span class="num4"></span>
+						</div>
+						
+						<div class="flower" style="left: 20%; top: 200px;">
+							<span class="num1" style="animation-delay: .25s;"></span>
+							<span class="num2" style="animation-delay: .25s;"></span>
+							<span class="num3" style="animation-delay: .25s;"></span>
+							<span class="num4" style="animation-delay: .25s;"></span>
+							<i style="animation-delay: .5s;">年</i>
+						</div>
+						<div class="flower" style="transform: rotate(45deg); left: 20%; top: 200px;">
+							<span class="num1" style="animation-delay: .25s;"></span>
+							<span class="num2" style="animation-delay: .25s;"></span>
+							<span class="num3" style="animation-delay: .25s;"></span>
+							<span class="num4" style="animation-delay: .25s;"></span>
+						</div>
+						
+						<div class="flower" style="left: 60%; top: 400px;">
+							<span class="num1" style="animation-delay: .5s;"></span>
+							<span class="num2" style="animation-delay: .5s;"></span>
+							<span class="num3" style="animation-delay: .5s;"></span>
+							<span class="num4" style="animation-delay: .5s;"></span>
+							<i style="animation-delay: .8s;">快</i>
+						</div>
+						<div class="flower" style="transform: rotate(45deg); left: 60%; top: 400px;">
+							<span class="num1" style="animation-delay: .5s;"></span>
+							<span class="num2" style="animation-delay: .5s;"></span>
+							<span class="num3" style="animation-delay: .5s;"></span>
+							<span class="num4" style="animation-delay: .5s;"></span>
+						</div>
+						
+						<div class="flower" style="left: 80%; top: 300px;">
+							<span class="num1" style="animation-delay: .75s;"></span>
+							<span class="num2" style="animation-delay: .75s;"></span>
+							<span class="num3" style="animation-delay: .75s;"></span>
+							<span class="num4" style="animation-delay: .75s;"></span>
+							<i style="animation-delay: .9s;">乐</i>
+						</div>
+						<div class="flower" style="transform: rotate(45deg); left: 80%; top: 300px;">
+							<span class="num1" style="animation-delay: .75s;"></span>
+							<span class="num2" style="animation-delay: .75s;"></span>
+							<span class="num3" style="animation-delay: .75s;"></span>
+							<span class="num4" style="animation-delay: .75s;"></span>
+						</div>
+					</div>
+					<h5 class="art-title gradient-text">谢谢能在19年末遇到你</h5>
+					
+					<p style="font-size: .6rem; color: yellow; margin: 0 auto; margin-top: 1rem;" id="time"></p>
+					
+					
+					
+					
+					
+					
+					
+					<div class="icon-up"></div>
+				</div>
+		      </div>
+		    
+			  <div class="swiper-slide" style="flex-direction: column; justify-content: space-between; padding-top: 1rem; box-sizing: border-box;">
+				<h3 style="text-align: center; font-size: 1rem; color: #fff;" class="gradient-text">想对你说...</h3>
+				<div class="container">
+				  <div class="cat">
+				    <div class="face">
+				      <div class="ear-left">
+				        <div class="inner-l"></div>
+				      </div>
+				      <div class="ear-right">
+				        <div class="inner-r"></div>
+				      </div>
+				      <div class="eye-left">
+				        <div class="eye-ball">
+				          <div class="eye-light"></div>
+				          <div class="shadow-light"></div>
+				        </div>
+				      </div>
+				      <div class="eye-right">
+				        <div class="eye-ball">
+				          <div class="eye-light"></div>
+				          <div class="shadow-light"></div>
+				        </div>
+				      </div>
+				      <div class="nose">
+				        <div class="l1"></div>
+				        <div class="l2"></div>
+				      </div>
+				    </div>
+				    <div class="cat-body">
+				      <div class="paw1"></div>
+				      <div class="paw2"></div>
+				      <div class="tail"></div>
+				    </div>
+				  </div>
+				  <div class="heart">
+				    <div class="heart-l"></div>
+				    <div class="heart-r"></div>
+				  </div>
+			    </div>
+				<p style="font-size: .7rem; color: #fff; padding: 1.5rem; padding-top: 1rem;" id="dazi"></p>
+			  </div>
+				
+			</div>
+		</div>
+		
+		<div class="music-play"></div>
+		<audio src="xzcw.mp3" id="audio" loop="true"></audio>
+	</body>
+</html>
